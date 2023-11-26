@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../layouts/Header.ejs') %>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <%- include('../layouts/Header_2.ejs') %>
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <%- include('../layouts/Aside_Nav.ejs') %>
+    <!-- End Sidebar-->
+
+    <main id="main" class="main">
+      <div class="pagetitle">
+        <h1>Doctors</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item">Doctors</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- End Page Title -->
+      <section class="section">
+        <div class="mb-3">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#verticalycentered"
+          >
+            Add New Doctor
+          </button>
+        </div>
+
+        <div class="modal fade" id="verticalycentered" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Doctor Information</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form
+                  method="POST"
+                  action="/admin/doctors"
+                  enctype="multipart/form-data"
+                >
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-4 col-form-label"
+                      >National ID</label
+                    >
+                    <div class="col-sm-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="natID"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-4 col-form-label"
+                      >Name</label
+                    >
+                    <div class="col-sm-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-4 col-form-label"
+                      >Email</label
+                    >
+                    <div class="col-sm-8">
+                      <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-4 col-form-label"
+                      >Phone</label
+                    >
+                    <div class="col-sm-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="phone"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-4 col-form-label"
+                      >File Upload</label
+                    >
+                    <div class="col-sm-8">
+                      <input
+                        class="form-control"
+                        type="file"
+                        id="formFile"
+                        name="image"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="text-end">
+                      <button
+                        type="submit"
+                        name="Submit"
+                        class="btn btn-primary"
+                      >
+                        Submit Form
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <!-- Table with stripped rows -->
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Doctor Image</th>
+                      <th scope="col">Doctor Name</th>
+                      <th scope="col">Doctor Email</th>
+                      <th scope="col">Created At</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let doctor of doctors) { %>
+                    <tr>
+                      <th scope="row"><%= doctor.id %></th>
+
+                      <td>
+                        <img
+                          src="/<%= doctor.image %>"
+                          width="150px"
+                          height="150px"
+                          alt=""
+                        />
+                      </td>
+
+                      <td><%= doctor.name %></td>
+                      <td><%= doctor.email %></td>
+                      <td><%= doctor.created_at %></td>
+
+                      <td>
+                        <% if(doctor.active === 1) { %>
+
+                        <a href="" class="btn btn-success">Edit</a>
+
+                        <a
+                          href="/admin/doctors/<%= doctor.id %>/<%= 0 %>"
+                          class="btn btn-danger"
+                          >Delete</a
+                        >
+
+                        <% } else { %>
+
+                        <a
+                          href="/admin/doctors/<%= doctor.id %>/<%= 1 %>"
+                          class="btn btn-primary"
+                          >Restore</a
+                        >
+
+                        <% } %>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <%- include('../layouts/Footer.ejs') %>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", (event) => {
+        document
+          .querySelector("#sidebar-nav .nav-item:nth-child(2) .nav-link")
+          .classList.remove("collapsed");
+      });
+    </script>
+
+    <!-- Vendor JS Files -->
+    <%- include('../layouts/Scripts.ejs') %>
+  </body>
+</html>
